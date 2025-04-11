@@ -1,0 +1,182 @@
+[
+  {
+    "id": "1",
+    "title": "Sumar dos números",
+    "description": "Dado dos enteros, retorna su suma.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "2",
+    "title": "Paréntesis válidos",
+    "description": "Verifica si una cadena tiene paréntesis balanceados.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "3",
+    "title": "Camino más corto",
+    "description": "Encuentra el camino más corto en un laberinto.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "4",
+    "title": "Ordenar una lista",
+    "description": "Ordena una lista de números de menor a mayor.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "5",
+    "title": "Buscar un elemento",
+    "description": "Busca un elemento en una lista y retorna su índice.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "6",
+    "title": "Contar vocales",
+    "description": "Cuenta el número de vocales en una cadena.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "7",
+    "title": "Máximo común divisor",
+    "description": "Calcula el máximo común divisor de dos números.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "8",
+    "title": "Palíndromo",
+    "description": "Verifica si una cadena es un palíndromo.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "9",
+    "title": "Anagramas",
+    "description": "Verifica si dos cadenas son anagramas.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "10",
+    "title": "Número primo",
+    "description": "Verifica si un número es primo.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "11",
+    "title": "Fibonacci",
+    "description": "Genera la secuencia de Fibonacci hasta n.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "12",
+    "title": "Suma de dígitos",
+    "description": "Suma los dígitos de un número.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "13",
+    "title": "Inversión de cadena",
+    "description": "Invierte una cadena.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "14",
+    "title": "Contar palabras",
+    "description": "Cuenta el número de palabras en una cadena.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "15",
+    "title": "Factorial",
+    "description": "Calcula el factorial de un número.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "16",
+    "title": "Buscar en un diccionario",
+    "description": "Busca una palabra en un diccionario y retorna su definición.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "17",
+    "title": "Contar consonantes",
+    "description": "Cuenta el número de consonantes en una cadena.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "18",
+    "title": "Suma de matrices",
+    "description": "Suma dos matrices de igual tamaño.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "19",
+    "title": "Buscar en un árbol binario",
+    "description": "Busca un valor en un árbol binario.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "20",
+    "title": "Contar dígitos pares e impares",
+    "description": "Cuenta cuántos dígitos son pares e impares en un número.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "21",
+    "title": "Combinaciones de letras",
+    "description": "Genera todas las combinaciones posibles de letras de una cadena.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "22",
+    "title": "Contar números en una lista",
+    "description": "Cuenta cuántos números hay en una lista.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "23",
+    "title": "Buscar en un grafo",
+    "description": "Busca un nodo en un grafo.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "24",
+    "title": "Suma de dígitos pares e impares",
+    "description": "Suma los dígitos pares e impares de un número.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "25",
+    "title": "Contar caracteres únicos",
+    "description": "Cuenta cuántos caracteres únicos hay en una cadena.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "26",
+    "title": "Buscar en una lista ordenada",
+    "description": "Busca un elemento en una lista ordenada y retorna su índice.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "27",
+    "title": "Suma de números en una lista",
+    "description": "Suma todos los números en una lista.",
+    "difficulty": "Difícil"
+  },
+  {
+    "id": "28",
+    "title": "Contar sílabas",
+    "description": "Cuenta el número de sílabas en una palabra.",
+    "difficulty": "Fácil"
+  },
+  {
+    "id": "29",
+    "title": "Buscar en un árbol de búsqueda",
+    "description": "Busca un valor en un árbol de búsqueda.",
+    "difficulty": "Medio"
+  },
+  {
+    "id": "30",
+    "title": "Contar palabras únicas",
+    "description": "Cuenta cuántas palabras únicas hay en una cadena.",
+    "difficulty": "Difícil"
+  }
+]

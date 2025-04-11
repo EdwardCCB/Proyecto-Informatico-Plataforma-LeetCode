@@ -4,7 +4,7 @@
       <div class="flex lg:flex-1">
         <RouterLink to="/" class="-m-1.5 p-1.5">
           <span class="sr-only">Go Code</span>
-          <img class="h-8 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+          <img class="h-8 w-auto" src="../assets/Logo_Name_Redux.png" alt="" />
         </RouterLink>
       </div>
       <div class="flex lg:hidden">
@@ -53,7 +53,7 @@
       <div class="hidden lg:flex lg:flex-1 lg:justify-end space-x-10">
         <RouterLink to="/login" class="text-sm/6 font-semibold text-gray-900"
         v-if="!hideAuthLinks">Log in <!-- <span aria-hidden="true">&rarr;</span> --></RouterLink>
-        <RouterLink to="/register" class="text-sm/6 font-semibold text-gray-900"
+        <RouterLink to="/register" class="text-sm font-semibold text-white bg-green-600 px-4 py-1 rounded-md shadow hover:bg-green-500 transition"
         v-if="!hideAuthLinks">Sign in <!-- <span aria-hidden="true">&rarr;</span> --></RouterLink>
       </div>
     </nav>
@@ -63,7 +63,7 @@
         <div class="flex items-center justify-between">
           <a href="#" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+            <img class="h-7 w-auto" src="../assets/Logo_Name_Redux.png" alt="" />
           </a>
           <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
             <span class="sr-only">Close menu</span>
@@ -89,7 +89,7 @@
             <div class="py-6">
               <RouterLink to="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
               v-if="!hideAuthLinks">Log in</RouterLink>
-              <RouterLink to="/register" class="text-sm/6 font-semibold text-gray-900"
+              <RouterLink to="/register" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
               v-if="!hideAuthLinks">Sign in <!-- <span aria-hidden="true">&rarr;</span> --></RouterLink>
             </div>
           </div>
