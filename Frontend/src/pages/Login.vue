@@ -59,21 +59,69 @@
 <script setup>
 import Navbar from '../components/Navbar.vue'
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider
+} from 'firebase/auth'
+import { auth } from '../utils/firebase' // Asegúrate que este archivo está bien configurado
 
 const email = ref('')
 const password = ref('')
+const router = useRouter()
 
-function handleLogin() {
-  // Aquí irá la lógica de login con Firebase Auth
-  alert(`Iniciando sesión con: ${email.value}`)
+// Login con email/contraseña
+async function handleLogin() {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+    const user = userCredential.user
+    const idToken = await user.getIdToken()
+
+    // Simulación: guardar sesión en localStorage
+    localStorage.setItem('user', 'true')
+
+    // Opcional: enviar el token al backend aquí
+
+    router.push('/')
+  } catch (err) {
+    console.error('Error al iniciar sesión:', err.message)
+    alert('Credenciales inválidas')
+  }
 }
 
-function signInWithGoogle() {
-  alert('Autenticación con Google')
+// Login con Google
+async function signInWithGoogle() {
+  try {
+    const provider = new GoogleAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+    const idToken = await user.getIdToken()
+
+    localStorage.setItem('user', 'true')
+
+    router.push('/')
+  } catch (err) {
+    console.error('Error con Google:', err.message)
+    alert('No se pudo iniciar sesión con Google')
+  }
 }
 
-function signInWithGitHub() {
-  alert('Autenticación con GitHub')
+// Login con GitHub
+async function signInWithGitHub() {
+  try {
+    const provider = new GithubAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+    const idToken = await user.getIdToken()
+
+    localStorage.setItem('user', 'true')
+
+    router.push('/')
+  } catch (err) {
+    console.error('Error con GitHub:', err.message)
+    alert('No se pudo iniciar sesión con GitHub')
+  }
 }
 </script>

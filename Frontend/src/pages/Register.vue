@@ -69,27 +69,69 @@
 <script setup>
 import Navbar from '../components/Navbar.vue'
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider
+} from 'firebase/auth'
+import { auth } from '../utils/firebase'
 
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const router = useRouter()
 
-function handleRegister() {
+// Registro con email y contraseña
+async function handleRegister() {
   if (password.value !== confirmPassword.value) {
     alert('Las contraseñas no coinciden')
     return
   }
 
-  // Aquí irá la lógica con Firebase
-  alert(`Registrando con email: ${email.value}`)
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    const user = userCredential.user
+    const idToken = await user.getIdToken()
+
+    localStorage.setItem('user', 'true')
+    router.push('/')
+  } catch (err) {
+    console.error('Error al registrar:', err.message)
+    alert(err.message)
+  }
 }
 
-function signInWithGoogle() {
-  alert('Aquí va la autenticación con Google en Firebase')
+// Registro con Google
+async function signInWithGoogle() {
+  try {
+    const provider = new GoogleAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+    const idToken = await user.getIdToken()
+
+    localStorage.setItem('user', 'true')
+    router.push('/')
+  } catch (err) {
+    console.error('Error con Google:', err.message)
+    alert('No se pudo registrar con Google')
+  }
 }
 
-function signInWithGitHub() {
-  alert('Aquí va la autenticación con GitHub en Firebase')
+// Registro con GitHub
+async function signInWithGitHub() {
+  try {
+    const provider = new GithubAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+    const idToken = await user.getIdToken()
+
+    localStorage.setItem('user', 'true')
+    router.push('/')
+  } catch (err) {
+    console.error('Error con GitHub:', err.message)
+    alert('No se pudo registrar con GitHub')
+  }
 }
 </script>
