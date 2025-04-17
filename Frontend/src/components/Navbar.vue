@@ -28,8 +28,33 @@
 
       <div class="hidden lg:flex lg:flex-1 lg:justify-end space-x-4">
         <template v-if="user">
-          <span class="text-sm text-gray-700">Hola, {{ user.displayName || user.email }}</span>
-          <button @click="handleLogout" class="text-sm text-white bg-red-600 px-4 py-1 rounded-md shadow hover:bg-red-500 transition">Logout</button>
+          <Menu as="div" class="relative inline-block text-left">
+            <MenuButton class="flex items-center gap-2 text-sm text-gray-700 focus:outline-none">
+              <img v-if="user.photoURL" :src="user.photoURL" alt="avatar" class="w-6 h-6 rounded-full object-cover" />
+              <UserCircleIcon v-else class="w-6 h-6 text-gray-500" />
+              <span class="hidden md:inline">{{ user.displayName || user.email }}</span>
+            </MenuButton>
+
+            <transition
+              enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <MenuItems class="absolute right-0 mt-2 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
+                <div class="py-1">
+                  <MenuItem>
+                    <RouterLink to="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi perfil</RouterLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <button @click="handleLogout" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Cerrar sesión</button>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+          </Menu>
         </template>
         <template v-else>
           <RouterLink to="/login" class="text-sm font-semibold text-gray-900">Log in</RouterLink>
@@ -86,11 +111,16 @@ import {
   DialogPanel,
   Popover,
   PopoverGroup,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem
 } from '@headlessui/vue'
 import {
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
+import { UserCircleIcon } from '@heroicons/vue/20/solid'
 import { useAuth } from '../composables/useAuth'
 
 const mobileMenuOpen = ref(false)

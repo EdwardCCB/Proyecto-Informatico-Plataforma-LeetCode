@@ -5,12 +5,14 @@ import Register from '../pages/Register.vue'
 import Problems from '../pages/Problems.vue'
 import Editor from '../pages/Editor.vue'
 import NotFound from '../pages/NotFound.vue'
+import Profile from '../pages/Profile.vue'
 
 const routes = [
   { path: '/', component: Home },
   { path: '/Home', component: Home },
   { path: '/Login', component: Login },
   { path: '/Register', component: Register },
+  { path: '/Profile', component: Profile },
   { path: '/Problems', component: Problems },
   { path: '/Editor/:id', component: Editor, props: true },
 
