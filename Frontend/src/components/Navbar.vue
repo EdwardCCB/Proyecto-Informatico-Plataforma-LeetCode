@@ -129,9 +129,16 @@ const router = useRouter()
 const isEditor = computed(() => route.path.startsWith('/editor'))
 const { user, logout } = useAuth()
 
-const handleRun = () => console.log('Run clicked')
-const handleSubmit = () => console.log('Submit clicked')
-const handleReset = () => console.log('Reset clicked')
+const emit = defineEmits(['run', 'submit', 'reset'])
+const handleRun = () => {
+  emit('run')
+}
+const handleSubmit = () => {
+  emit('submit')
+}
+const handleReset = () => {
+  emit('reset')
+}
 const handleLogout = async () => {
   await logout()
   router.push('/')

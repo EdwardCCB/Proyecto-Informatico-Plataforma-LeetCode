@@ -13,9 +13,20 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 const code = ref(props.modelValue || '')
 
+// Emitir cambios al padre cuando el usuario escribe
 watch(code, (newValue) => {
   emit('update:modelValue', newValue)
 })
+
+// Actualizar el editor si el padre cambia el valor
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue !== code.value) {
+      code.value = newValue
+    }
+  }
+)
 </script>
 
 <template>
