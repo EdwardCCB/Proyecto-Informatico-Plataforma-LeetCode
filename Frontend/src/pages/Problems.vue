@@ -75,7 +75,7 @@ function handleShowAll() {
           :key="problem.id"
           :id="problem.id"
           :title="problem.title"
-          :description="problem.description"
+          :shortDescription="problem.shortDescription"
           :difficulty="problem.difficulty"
         />
       </div>

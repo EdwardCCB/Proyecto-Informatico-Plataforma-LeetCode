@@ -6,7 +6,14 @@
       <!-- Sección de descripción -->
       <div class="w-1/2 p-4 overflow-y-auto bg-gray-50 border-r border-gray-300">
         <h1 class="text-2xl font-bold mb-2">{{ problem.title }}</h1>
-        <p class="text-gray-700 whitespace-pre-line mb-4">{{ problem.description }}</p>
+        <div
+          class="text-sm text-gray-800 leading-relaxed space-y-4
+                 [&>h1]:text-xl [&>h2]:text-lg [&>h3]:text-base font-semibold
+                 [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded
+                 [&>pre]:bg-gray-100 [&>pre]:p-3 [&>pre]:rounded-md [&>pre]:text-sm [&>pre]:overflow-x-auto
+                 [&>ul]:list-disc [&>ul]:pl-6 [&>ol]:list-decimal"
+          v-html="renderedDescription"
+        ></div>
       </div>
 
       <!-- Sección del editor -->
@@ -46,8 +53,9 @@ import CodeEditor from '../components/CodeEditor.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getAuth } from 'firebase/auth'
+import { marked } from 'marked'
 
-// Lista de lenguajes soportados por Judge0 y sus nombres para el editor
+// Lenguajes soportados por Judge0 y su nombre para el editor
 const languages = [
   { id: 54, name: 'C++ (GCC 9.2.0)', editorLang: 'cpp' },
   { id: 62, name: 'Java (OpenJDK 13)', editorLang: 'java' },
@@ -81,8 +89,7 @@ if __name__ == "__main__":
 main();`,
 }
 
-
-const selectedLanguageId = ref(54) // Por defecto C++
+const selectedLanguageId = ref(54)
 const code = ref('')
 const output = ref('')
 const error = ref('')
@@ -93,16 +100,17 @@ const editorLanguage = computed(() => {
   return lang ? lang.editorLang : 'cpp'
 })
 
-const problems = [
-  { id: '1', title: 'Two Sum', description: 'Given an array of integers...', code: '' },
-  // otros problemas...
-]
+import problemsData from '../data/problems.json'
 
 const route = useRoute()
 const problem = ref({})
 
+const renderedDescription = computed(() => {
+  return marked.parse(problem.value.description || '')
+})
+
 onMounted(() => {
-  const found = problems.find(p => p.id === route.params.id)
+  const found = problemsData.find(p => p.id === route.params.id)
   if (found) {
     problem.value = found
     code.value = languageSnippets[selectedLanguageId.value] || found.code || ''
@@ -133,12 +141,11 @@ async function handleRun() {
       body: JSON.stringify({
         source_code: code.value,
         language_id: selectedLanguageId.value,
-        stdin: '5',
+        stdin: '',
       }),
     })
 
     const data = await res.json()
-    console.log('Judge0 response:', data)
 
     if (data.stderr) {
       output.value = `Error: ${data.stderr}`
@@ -149,7 +156,6 @@ async function handleRun() {
     } else {
       output.value = 'Código ejecutado sin salida.'
     }
-    
   } catch (err) {
     error.value = 'Error ejecutando el código.'
     console.error(err)

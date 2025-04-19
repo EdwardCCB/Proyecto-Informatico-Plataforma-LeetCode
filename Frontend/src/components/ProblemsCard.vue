@@ -4,7 +4,7 @@
     @click="handleClick"
   >
     <h3 class="text-xl font-semibold text-gray-800">{{ title }}</h3>
-    <p class="text-sm text-gray-600 mt-2">{{ description }}</p>
+    <p class="text-sm text-gray-600 mt-2">{{ shortDescription }}</p>
     <span class="inline-block mt-4 px-3 py-1 text-xs font-medium rounded-full" :class="difficultyColor">
       {{ difficulty }}
     </span>
@@ -14,14 +14,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
-
-// Agregamos solo esto:
 import { isUserLoggedIn } from '../utils/auth'
 
 const props = defineProps({
   id: String,
   title: String,
-  description: String,
+  shortDescription: String,
   difficulty: String,
 })
 

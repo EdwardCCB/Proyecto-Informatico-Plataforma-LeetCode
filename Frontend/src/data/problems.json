@@ -1,182 +1,170 @@
 [
   {
-    "id": "1",
+    "id": "two-sum",
     "title": "Sumar dos números",
-    "description": "Dado dos enteros, retorna su suma.",
-    "difficulty": "Fácil"
+    "difficulty": "Fácil",
+    "topics": ["Aritmética", "Entrada/Salida"],
+    "shortDescription": "Dado dos enteros, retorna su suma.",
+    "description": "**Dado dos enteros**, retorna su suma.\n\n### Ejemplo:\n```text\nInput: 2 3\nOutput: 5\n```\n\n### Restricciones:\n- -10^9 <= a, b <= 10^9\n- La salida debe ser un solo número, sin espacios."
   },
   {
-    "id": "2",
-    "title": "Paréntesis válidos",
-    "description": "Verifica si una cadena tiene paréntesis balanceados.",
-    "difficulty": "Medio"
+    "id": "diff-two-numbers",
+    "title": "Restar dos números",
+    "difficulty": "Medio",
+    "topics": ["Aritmética", "Entrada/Salida"],
+    "shortDescription": "Dado dos enteros, retorna su diferencia.",
+    "description": "**Dado dos enteros**, retorna su diferencia (a - b).\n\n### Ejemplo:\n```text\nInput: 5 3\nOutput: 2\n```\n\n### Restricciones:\n- -10^9 <= a, b <= 10^9"
   },
   {
-    "id": "3",
-    "title": "Camino más corto",
-    "description": "Encuentra el camino más corto en un laberinto.",
-    "difficulty": "Difícil"
+    "id": "multiply-two-numbers",
+    "title": "Multiplicar dos números",
+    "difficulty": "Difícil",
+    "topics": ["Aritmética", "Entrada/Salida"],
+    "shortDescription": "Dado dos enteros, retorna su producto.",
+    "description": "**Dado dos enteros**, retorna su producto.\n\n### Ejemplo:\n```text\nInput: 4 3\nOutput: 12\n```\n\n### Restricciones:\n- -10^5 <= a, b <= 10^5"
   },
   {
-    "id": "4",
-    "title": "Ordenar una lista",
-    "description": "Ordena una lista de números de menor a mayor.",
-    "difficulty": "Fácil"
+    "id": "division-two-numbers",
+    "title": "Dividir dos números",
+    "difficulty": "Medio",
+    "topics": ["Aritmética", "Entrada/Salida"],
+    "shortDescription": "Realiza la división de dos enteros.",
+    "description": "**Dado dos enteros**, retorna el cociente de su división entera (a // b).\n\n### Ejemplo:\n```text\nInput: 10 2\nOutput: 5\n```\n\n### Restricciones:\n- -10^9 <= a, b <= 10^9\n- b != 0"
   },
   {
-    "id": "5",
-    "title": "Buscar un elemento",
-    "description": "Busca un elemento en una lista y retorna su índice.",
-    "difficulty": "Medio"
+    "id": "sum-list",
+    "title": "Suma de una lista",
+    "difficulty": "Fácil",
+    "topics": ["Listas", "Aritmética"],
+    "shortDescription": "Suma todos los elementos de una lista de enteros.",
+    "description": "**Dada una lista de enteros**, retorna la suma total de sus elementos.\n\n### Ejemplo:\n```text\nInput: [1, 2, 3, 4]\nOutput: 10\n```\n\n### Restricciones:\n- 1 <= n <= 10^5\n- -10^4 <= nums[i] <= 10^4"
   },
   {
-    "id": "6",
-    "title": "Contar vocales",
-    "description": "Cuenta el número de vocales en una cadena.",
-    "difficulty": "Fácil"
+    "id": "max-of-two",
+    "title": "Máximo de dos números",
+    "difficulty": "Difícil",
+    "topics": ["Aritmética", "Condicionales"],
+    "shortDescription": "Retorna el mayor de dos enteros.",
+    "description": "**Dado dos enteros**, retorna el mayor de los dos.\n\n### Ejemplo:\n```text\nInput: 3 7\nOutput: 7\n```\n\n### Restricciones:\n- -10^9 <= a, b <= 10^9"
   },
   {
-    "id": "7",
-    "title": "Máximo común divisor",
-    "description": "Calcula el máximo común divisor de dos números.",
-    "difficulty": "Difícil"
+    "id": "even-or-odd",
+    "title": "Par o impar",
+    "difficulty": "Fácil",
+    "topics": ["Condicionales"],
+    "shortDescription": "Determina si un número es par o impar.",
+    "description": "**Dado un número entero**, determina si es par o impar.\n\n### Ejemplo:\n```text\nInput: 4\nOutput: par\n```\n\n### Restricciones:\n- -10^9 <= n <= 10^9"
   },
   {
-    "id": "8",
-    "title": "Palíndromo",
-    "description": "Verifica si una cadena es un palíndromo.",
-    "difficulty": "Fácil"
+    "id": "fibonacci-n",
+    "title": "Fibonacci hasta n",
+    "difficulty": "Medio",
+    "topics": ["Recursión", "Iteración"],
+    "shortDescription": "Genera los primeros n números de Fibonacci.",
+    "description": "**Dado un entero n**, genera los primeros n términos de la secuencia de Fibonacci.\n\n### Ejemplo:\n```text\nInput: 5\nOutput: 0 1 1 2 3\n```\n\n### Restricciones:\n- 1 <= n <= 50"
   },
   {
-    "id": "9",
-    "title": "Anagramas",
-    "description": "Verifica si dos cadenas son anagramas.",
-    "difficulty": "Medio"
-  },
-  {
-    "id": "10",
-    "title": "Número primo",
-    "description": "Verifica si un número es primo.",
-    "difficulty": "Difícil"
-  },
-  {
-    "id": "11",
-    "title": "Fibonacci",
-    "description": "Genera la secuencia de Fibonacci hasta n.",
-    "difficulty": "Fácil"
-  },
-  {
-    "id": "12",
-    "title": "Suma de dígitos",
-    "description": "Suma los dígitos de un número.",
-    "difficulty": "Medio"
-  },
-  {
-    "id": "13",
-    "title": "Inversión de cadena",
-    "description": "Invierte una cadena.",
-    "difficulty": "Fácil"
-  },
-  {
-    "id": "14",
-    "title": "Contar palabras",
-    "description": "Cuenta el número de palabras en una cadena.",
-    "difficulty": "Medio"
-  },
-  {
-    "id": "15",
+    "id": "factorial",
     "title": "Factorial",
-    "description": "Calcula el factorial de un número.",
-    "difficulty": "Difícil"
+    "difficulty": "Difícil",
+    "topics": ["Iteración", "Recursión"],
+    "shortDescription": "Calcula el factorial de un número.",
+    "description": "**Dado un número entero positivo**, calcula su factorial.\n\n### Ejemplo:\n```text\nInput: 5\nOutput: 120\n```\n\n### Restricciones:\n- 0 <= n <= 20"
   },
   {
-    "id": "16",
-    "title": "Buscar en un diccionario",
-    "description": "Busca una palabra en un diccionario y retorna su definición.",
-    "difficulty": "Fácil"
+    "id": "reverse-string",
+    "title": "Invertir una cadena",
+    "difficulty": "Fácil",
+    "topics": ["Cadenas"],
+    "shortDescription": "Invierte el orden de los caracteres en una cadena.",
+    "description": "**Dada una cadena de caracteres**, retorna la misma cadena invertida.\n\n### Ejemplo:\n```text\nInput: hola\nOutput: aloh\n```\n\n### Restricciones:\n- 1 <= s.length <= 1000"
   },
   {
-    "id": "17",
-    "title": "Contar consonantes",
-    "description": "Cuenta el número de consonantes en una cadena.",
-    "difficulty": "Medio"
+    "id": "palindrome-check",
+    "title": "Verificar palíndromo",
+    "difficulty": "Difícil",
+    "topics": ["Cadenas"],
+    "shortDescription": "Verifica si una cadena es un palíndromo.",
+    "description": "**Dada una cadena**, verifica si es igual al revés (palíndromo).\n\n### Ejemplo:\n```text\nInput: radar\nOutput: true\n```\n\n### Restricciones:\n- 1 <= s.length <= 1000"
   },
   {
-    "id": "18",
-    "title": "Suma de matrices",
-    "description": "Suma dos matrices de igual tamaño.",
-    "difficulty": "Difícil"
+    "id": "count-vowels",
+    "title": "Contar vocales",
+    "difficulty": "Fácil",
+    "topics": ["Cadenas"],
+    "shortDescription": "Cuenta cuántas vocales contiene una cadena.",
+    "description": "**Dada una cadena**, cuenta el número de vocales (a, e, i, o, u).\n\n### Ejemplo:\n```text\nInput: 'educacion'\nOutput: 5\n```\n\n### Restricciones:\n- 1 <= s.length <= 1000"
   },
   {
-    "id": "19",
-    "title": "Buscar en un árbol binario",
-    "description": "Busca un valor en un árbol binario.",
-    "difficulty": "Fácil"
+    "id": "sum-digits",
+    "title": "Suma de dígitos",
+    "difficulty": "Medio",
+    "topics": ["Aritmética"],
+    "shortDescription": "Suma todos los dígitos de un número entero positivo.",
+    "description": "**Dado un número entero positivo**, suma todos sus dígitos.\n\n### Ejemplo:\n```text\nInput: 1234\nOutput: 10\n```\n\n### Restricciones:\n- 0 <= n <= 10^9"
   },
   {
-    "id": "20",
-    "title": "Contar dígitos pares e impares",
-    "description": "Cuenta cuántos dígitos son pares e impares en un número.",
-    "difficulty": "Medio"
+    "id": "max-in-list",
+    "title": "Máximo en lista",
+    "difficulty": "Fácil",
+    "topics": ["Listas"],
+    "shortDescription": "Encuentra el número máximo en una lista.",
+    "description": "**Dada una lista de enteros**, retorna el valor máximo.\n\n### Ejemplo:\n```text\nInput: [3, 9, 2, 8]\nOutput: 9\n```\n\n### Restricciones:\n- 1 <= n <= 10^4"
   },
   {
-    "id": "21",
-    "title": "Combinaciones de letras",
-    "description": "Genera todas las combinaciones posibles de letras de una cadena.",
-    "difficulty": "Difícil"
+    "id": "min-in-list",
+    "title": "Mínimo en lista",
+    "difficulty": "Fácil",
+    "topics": ["Listas"],
+    "shortDescription": "Encuentra el número mínimo en una lista.",
+    "description": "**Dada una lista de enteros**, retorna el valor mínimo.\n\n### Ejemplo:\n```text\nInput: [5, 3, 7, 1]\nOutput: 1\n```\n\n### Restricciones:\n- 1 <= n <= 10^4"
   },
   {
-    "id": "22",
-    "title": "Contar números en una lista",
-    "description": "Cuenta cuántos números hay en una lista.",
-    "difficulty": "Fácil"
+    "id": "average-list",
+    "title": "Promedio de lista",
+    "difficulty": "Medio",
+    "topics": ["Listas", "Aritmética"],
+    "shortDescription": "Calcula el promedio de una lista de enteros.",
+    "description": "**Dada una lista de enteros**, calcula su promedio (media aritmética).\n\n### Ejemplo:\n```text\nInput: [2, 4, 6]\nOutput: 4\n```\n\n### Restricciones:\n- 1 <= n <= 10^4"
   },
   {
-    "id": "23",
-    "title": "Buscar en un grafo",
-    "description": "Busca un nodo en un grafo.",
-    "difficulty": "Medio"
+    "id": "count-words",
+    "title": "Contar palabras",
+    "difficulty": "Fácil",
+    "topics": ["Cadenas"],
+    "shortDescription": "Cuenta cuántas palabras hay en una frase.",
+    "description": "**Dada una cadena que representa una frase**, cuenta cuántas palabras contiene.\n\n### Ejemplo:\n```text\nInput: 'Hola mundo'\nOutput: 2\n```\n\n### Restricciones:\n- 1 <= s.length <= 1000"
   },
   {
-    "id": "24",
-    "title": "Suma de dígitos pares e impares",
-    "description": "Suma los dígitos pares e impares de un número.",
-    "difficulty": "Difícil"
+    "id": "is-positive",
+    "title": "¿Es positivo?",
+    "difficulty": "Fácil",
+    "topics": ["Condicionales"],
+    "shortDescription": "Verifica si un número es positivo.",
+    "description": "**Dado un número entero**, determina si es positivo, negativo o cero.\n\n### Ejemplo:\n```text\nInput: -5\nOutput: negativo\n```\n\n### Restricciones:\n- -10^9 <= n <= 10^9"
   },
   {
-    "id": "25",
-    "title": "Contar caracteres únicos",
-    "description": "Cuenta cuántos caracteres únicos hay en una cadena.",
-    "difficulty": "Fácil"
+    "id": "count-even-numbers",
+    "title": "Contar números pares",
+    "difficulty": "Medio",
+    "topics": ["Listas", "Condicionales"],
+    "shortDescription": "Cuenta cuántos números pares hay en una lista.",
+    "description": "**Dada una lista de enteros**, cuenta cuántos son pares.\n\n### Ejemplo:\n```text\nInput: [1, 2, 3, 4]\nOutput: 2\n```\n\n### Restricciones:\n- 1 <= n <= 10^4"
   },
   {
-    "id": "26",
-    "title": "Buscar en una lista ordenada",
-    "description": "Busca un elemento en una lista ordenada y retorna su índice.",
-    "difficulty": "Medio"
+    "id": "abs-value",
+    "title": "Valor absoluto",
+    "difficulty": "Difícil",
+    "topics": ["Aritmética"],
+    "shortDescription": "Calcula el valor absoluto de un número.",
+    "description": "**Dado un número entero**, retorna su valor absoluto.\n\n### Ejemplo:\n```text\nInput: -7\nOutput: 7\n```\n\n### Restricciones:\n- -10^9 <= n <= 10^9"
   },
   {
-    "id": "27",
-    "title": "Suma de números en una lista",
-    "description": "Suma todos los números en una lista.",
-    "difficulty": "Difícil"
-  },
-  {
-    "id": "28",
-    "title": "Contar sílabas",
-    "description": "Cuenta el número de sílabas en una palabra.",
-    "difficulty": "Fácil"
-  },
-  {
-    "id": "29",
-    "title": "Buscar en un árbol de búsqueda",
-    "description": "Busca un valor en un árbol de búsqueda.",
-    "difficulty": "Medio"
-  },
-  {
-    "id": "30",
-    "title": "Contar palabras únicas",
-    "description": "Cuenta cuántas palabras únicas hay en una cadena.",
-    "difficulty": "Difícil"
+    "id": "is-prime",
+    "title": "¿Es primo?",
+    "difficulty": "Difícil",
+    "topics": ["Aritmética", "Condicionales"],
+    "shortDescription": "Verifica si un número es primo.",
+    "description": "**Dado un número entero positivo**, verifica si es primo.\n\n### Ejemplo:\n```text\nInput: 7\nOutput: true\n```\n\n### Restricciones:\n- 1 <= n <= 10^9"
   }
 ]
