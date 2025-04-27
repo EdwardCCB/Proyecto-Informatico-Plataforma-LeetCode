@@ -66,24 +66,38 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider
 } from 'firebase/auth'
-import { auth } from '../utils/firebase' // Asegúrate que este archivo está bien configurado
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { auth } from '../utils/firebase'
 
 const email = ref('')
 const password = ref('')
 const router = useRouter()
+const db = getFirestore()
 
 // Login con email/contraseña
 async function handleLogin() {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
-    const idToken = await user.getIdToken()
 
-    // Simulación: guardar sesión en localStorage
+    // Traer datos del usuario desde Firestore
+    const userDoc = await getDoc(doc(db, 'users', user.uid))
+
+    if (!userDoc.exists()) {
+      // (Muy raro en email/password, pero por seguridad)
+      await setDoc(doc(db, 'users', user.uid), {
+        displayName: user.displayName || '',
+        email: user.email || '',
+        photoURL: user.photoURL || null,
+        createdAt: serverTimestamp(),
+        solvedProblems: [],
+        bookmarkedProblems: [],
+        submissions: {},
+        role: 'user'
+      })
+    }
+
     localStorage.setItem('user', 'true')
-
-    // Opcional: enviar el token al backend aquí
-
     router.push('/')
   } catch (err) {
     console.error('Error al iniciar sesión:', err.message)
@@ -97,10 +111,23 @@ async function signInWithGoogle() {
     const provider = new GoogleAuthProvider()
     const result = await signInWithPopup(auth, provider)
     const user = result.user
-    const idToken = await user.getIdToken()
+
+    // Traer o crear perfil en Firestore
+    const userDoc = await getDoc(doc(db, 'users', user.uid))
+    if (!userDoc.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        displayName: user.displayName || '',
+        email: user.email || '',
+        photoURL: user.photoURL || null,
+        createdAt: serverTimestamp(),
+        solvedProblems: [],
+        bookmarkedProblems: [],
+        submissions: {},
+        role: 'user'
+      })
+    }
 
     localStorage.setItem('user', 'true')
-
     router.push('/')
   } catch (err) {
     console.error('Error con Google:', err.message)
@@ -114,10 +141,22 @@ async function signInWithGitHub() {
     const provider = new GithubAuthProvider()
     const result = await signInWithPopup(auth, provider)
     const user = result.user
-    const idToken = await user.getIdToken()
+
+    const userDoc = await getDoc(doc(db, 'users', user.uid))
+    if (!userDoc.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        displayName: user.displayName || '',
+        email: user.email || '',
+        photoURL: user.photoURL || null,
+        createdAt: serverTimestamp(),
+        solvedProblems: [],
+        bookmarkedProblems: [],
+        submissions: {},
+        role: 'user'
+      })
+    }
 
     localStorage.setItem('user', 'true')
-
     router.push('/')
   } catch (err) {
     console.error('Error con GitHub:', err.message)

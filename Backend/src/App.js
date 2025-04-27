@@ -11,18 +11,18 @@ dotenv.config()
 const app = express()
 
 // Middleware
-app.use(cors()) // permite CORS desde cualquier origen
-app.use(express.json()) // permite leer JSON en req.body
+app.use(cors())
+app.use(express.json())
 
 // Inicializar Firebase Admin
-const serviceAccountPath = path.resolve('src/firebase-service-account.json')
+const serviceAccountPath = path.resolve('C:/Users/INTEL/Documents/Code/VSCode/Proyecto-Informatico-Plataforma-LeetCode/Backend/firebase-service-account.json')
 const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'))
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
 
-// Ruta principal para ejecutar código con Judge0
+// Ruta para ejecutar código con Judge0
 app.post('/api/execute', async (req, res) => {
   const { source_code, language_id, stdin } = req.body
 
@@ -32,6 +32,20 @@ app.post('/api/execute', async (req, res) => {
   } catch (error) {
     console.error('Error ejecutando código:', error)
     res.status(500).json({ error: 'Error al ejecutar código' })
+  }
+})
+
+// Nueva ruta para eliminar un usuario
+app.delete('/api/delete-user/:uid', async (req, res) => {
+  const { uid } = req.params
+
+  try {
+    await admin.auth().deleteUser(uid)
+    console.log(`Usuario ${uid} eliminado correctamente.`)
+    res.status(200).json({ message: 'Usuario eliminado correctamente' })
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error)
+    res.status(500).json({ error: 'Error al eliminar usuario' })
   }
 })
 

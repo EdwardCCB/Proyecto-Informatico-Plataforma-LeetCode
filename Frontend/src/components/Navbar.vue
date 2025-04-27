@@ -18,6 +18,7 @@
         <template v-if="!isEditor">
           <RouterLink to="/Home" class="text-sm font-semibold text-gray-900">Home</RouterLink>
           <RouterLink to="/Problems" class="text-sm font-semibold text-gray-900">Problems</RouterLink>
+          <RouterLink v-if="!isEditor && isAdmin" to="/admin" class="text-sm font-semibold text-gray-900">Admin</RouterLink>
         </template>
         <template v-else>
           <button @click="handleRun" class="text-sm font-semibold text-white bg-green-600 px-4 py-1 rounded-md shadow hover:bg-green-500 transition">Run</button>
@@ -81,6 +82,7 @@
             <div class="space-y-2 py-6">
               <RouterLink to="/Home" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50" v-if="!isEditor">Home</RouterLink>
               <RouterLink to="/Problems" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50" v-if="!isEditor">Problems</RouterLink>
+              <RouterLink to="/admin"class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50" v-if="!isEditor && isAdmin">Admin</RouterLink>
               <template v-if="isEditor">
                 <button @click="handleRun" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-green-600 hover:bg-green-500 transition">Run</button>
                 <button @click="handleSubmit" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-green-600 hover:bg-green-500 transition">Submit</button>
@@ -105,7 +107,7 @@
 
 <script setup>
 import { RouterLink, useRoute, useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -122,12 +124,15 @@ import {
 } from '@heroicons/vue/24/outline'
 import { UserCircleIcon } from '@heroicons/vue/20/solid'
 import { useAuth } from '../composables/useAuth'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
 
 const mobileMenuOpen = ref(false)
 const route = useRoute()
 const router = useRouter()
 const isEditor = computed(() => route.path.startsWith('/editor'))
 const { user, logout } = useAuth()
+
+const isAdmin = ref(false)
 
 const emit = defineEmits(['run', 'submit', 'reset'])
 const handleRun = () => {
@@ -143,4 +148,15 @@ const handleLogout = async () => {
   await logout()
   router.push('/')
 }
+
+// Verificar si el usuario actual es admin
+onMounted(async () => {
+  if (user.value) {
+    const db = getFirestore()
+    const userDoc = await getDoc(doc(db, 'users', user.value.uid))
+    if (userDoc.exists() && userDoc.data().role === 'admin') {
+      isAdmin.value = true
+    }
+  }
+})
 </script>

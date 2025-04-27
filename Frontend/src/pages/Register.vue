@@ -8,6 +8,16 @@
 
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <input
+              type="text"
+              v-model="displayName"
+              required
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
             <input
               type="email"
@@ -68,20 +78,24 @@
 
 <script setup>
 import Navbar from '../components/Navbar.vue'
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import {
   createUserWithEmailAndPassword,
+  updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider
 } from 'firebase/auth'
+import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { auth } from '../utils/firebase'
 
+const displayName = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const router = useRouter()
+const db = getFirestore()
 
 // Registro con email y contraseña
 async function handleRegister() {
@@ -93,7 +107,21 @@ async function handleRegister() {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
-    const idToken = await user.getIdToken()
+
+    await updateProfile(user, { displayName: displayName.value })
+
+    // Guardar en Firestore
+    await setDoc(doc(db, 'users', user.uid), {
+      displayName: displayName.value,
+      email: user.email,
+      photoURL: user.photoURL || null,
+      createdAt: serverTimestamp(),
+      solvedProblems: [],
+      bookmarkedProblems: [],
+      submissions: {},
+      role: 'user',
+      providerId: user.providerData[0].providerId || 'password'
+    })
 
     localStorage.setItem('user', 'true')
     router.push('/')
@@ -109,7 +137,19 @@ async function signInWithGoogle() {
     const provider = new GoogleAuthProvider()
     const result = await signInWithPopup(auth, provider)
     const user = result.user
-    const idToken = await user.getIdToken()
+
+    // Verificar si es nuevo (opcional) — aquí asumimos que si no existe aún, se crea:
+    await setDoc(doc(db, 'users', user.uid), {
+      displayName: user.displayName || '',
+      email: user.email || '',
+      photoURL: user.photoURL || null,
+      createdAt: serverTimestamp(),
+      solvedProblems: [],
+      bookmarkedProblems: [],
+      submissions: {},
+      role: 'user',
+      providerId: user.providerData[0].providerId || 'password'
+    }, { merge: true })
 
     localStorage.setItem('user', 'true')
     router.push('/')
@@ -125,7 +165,18 @@ async function signInWithGitHub() {
     const provider = new GithubAuthProvider()
     const result = await signInWithPopup(auth, provider)
     const user = result.user
-    const idToken = await user.getIdToken()
+
+    await setDoc(doc(db, 'users', user.uid), {
+      displayName: user.displayName || '',
+      email: user.email || '',
+      photoURL: user.photoURL || null,
+      createdAt: serverTimestamp(),
+      solvedProblems: [],
+      bookmarkedProblems: [],
+      submissions: {},
+      role: 'user',
+      providerId: user.providerData[0].providerId || 'password'
+    }, { merge: true })
 
     localStorage.setItem('user', 'true')
     router.push('/')
