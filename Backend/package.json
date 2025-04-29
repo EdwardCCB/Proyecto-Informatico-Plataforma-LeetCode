@@ -5,6 +5,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
+    "start": "node src/App.js",
     "dev": "node src/App.js"
   },
   "keywords": [],
