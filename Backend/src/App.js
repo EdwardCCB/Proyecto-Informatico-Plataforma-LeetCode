@@ -2,8 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import admin from 'firebase-admin'
 import dotenv from 'dotenv'
-import fs from 'fs'
-import path from 'path'
 import { submitCode } from './services/judge0.js'
 
 dotenv.config()
@@ -14,9 +12,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Inicializar Firebase Admin
-const serviceAccountPath = path.resolve('C:/Users/INTEL/Documents/Code/VSCode/Proyecto-Informatico-Plataforma-LeetCode/Backend/firebase-service-account.json')
-const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'))
+// Inicializar Firebase Admin desde variable de entorno
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
