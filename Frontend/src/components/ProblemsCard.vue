@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer relative"
+    class="rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer relative"
+    :class="cardClasses"
     @click="handleClick"
   >
     <!-- Botón eliminar -->
@@ -15,7 +16,10 @@
 
     <h3 class="text-xl font-semibold text-gray-800">{{ title }}</h3>
     <p class="text-sm text-gray-600 mt-2">{{ shortDescription }}</p>
-    <span class="inline-block mt-4 px-3 py-1 text-xs font-medium rounded-full" :class="difficultyColor">
+    <span
+      class="inline-block mt-4 px-3 py-1 text-xs font-medium rounded-full"
+      :class="difficultyColor"
+    >
       {{ difficulty }}
     </span>
   </div>
@@ -24,7 +28,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
-import { isUserLoggedIn } from '../utils/auth'
+import { useSolvedProblems } from '../composables/useSolvedProblems'
 
 const props = defineProps({
   id: String,
@@ -38,24 +42,24 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['delete'])
-
 const router = useRouter()
+const { solvedProblems } = useSolvedProblems()
+
+const cardClasses = computed(() => {
+  return solvedProblems.value.includes(props.id) ? 'bg-green-100' : 'bg-white'
+})
 
 const difficultyColor = computed(() => {
   return {
-    Fácil: 'bg-green-100 text-green-700',
-    Medio: 'bg-yellow-100 text-yellow-700',
-    Difícil: 'bg-red-100 text-red-700',
+    Fácil: 'bg-green-200 text-green-800',
+    Medio: 'bg-yellow-200 text-yellow-800',
+    Difícil: 'bg-red-200 text-red-800',
   }[props.difficulty] || 'bg-gray-100 text-gray-700'
 })
 
 function handleClick() {
-  if (props.isDeleteMode) return // No navegar si estamos en modo eliminar
-  if (isUserLoggedIn()) {
-    router.push(`/editor/${props.id}`)
-  } else {
-    router.push('/login')
-  }
+  if (props.isDeleteMode) return
+  router.push(`/editor/${props.id}`)
 }
 
 function handleDelete() {

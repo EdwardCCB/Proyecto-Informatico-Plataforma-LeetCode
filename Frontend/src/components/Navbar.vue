@@ -22,8 +22,8 @@
         </template>
         <template v-else>
           <button @click="handleRun" class="text-sm font-semibold text-white bg-green-600 px-4 py-1 rounded-md shadow hover:bg-green-500 transition">Run</button>
-          <button @click="handleSubmit" class="text-sm font-semibold text-white bg-green-600 px-4 py-1 rounded-md shadow hover:bg-green-500 transition">Submit</button>
-          <button @click="handleReset" class="text-sm font-semibold text-white bg-gray-600 px-4 py-1 rounded-md shadow hover:bg-gray-500 transition">Reset</button>
+          <!--<button @click="handleSubmit" class="text-sm font-semibold text-white bg-green-600 px-4 py-1 rounded-md shadow hover:bg-green-500 transition">Submit</button> -->
+          <!--<button @click="handleReset" class="text-sm font-semibold text-white bg-gray-600 px-4 py-1 rounded-md shadow hover:bg-gray-500 transition">Reset</button> -->
         </template>
       </PopoverGroup>
 
@@ -85,8 +85,8 @@
               <RouterLink to="/admin"class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50" v-if="!isEditor && isAdmin">Admin</RouterLink>
               <template v-if="isEditor">
                 <button @click="handleRun" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-green-600 hover:bg-green-500 transition">Run</button>
-                <button @click="handleSubmit" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-green-600 hover:bg-green-500 transition">Submit</button>
-                <button @click="handleReset" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-gray-600 hover:bg-gray-500 transition">Reset</button>
+                <!--<button @click="handleSubmit" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-green-600 hover:bg-green-500 transition">Submit</button>-->
+                <!--<button @click="handleReset" class="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-white bg-gray-600 hover:bg-gray-500 transition">Reset</button>-->
               </template>
             </div>
             <div class="py-6">

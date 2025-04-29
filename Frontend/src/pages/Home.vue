@@ -3,13 +3,19 @@ import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import ProblemCard from '../components/ProblemsCard.vue'
 import { ref, onMounted } from 'vue'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../utils/firebase'
 
 const problems = ref([])
 
 onMounted(async () => {
-  const response = await fetch('/src/data/problems.json')
-  const data = await response.json()
-  problems.value = getRandomProblems(data, 3)
+  try {
+    const snapshot = await getDocs(collection(db, 'problems'))
+    const allProblems = snapshot.docs.map(doc => doc.data())
+    problems.value = getRandomProblems(allProblems, 3)
+  } catch (err) {
+    console.error('Error cargando problemas desde Firestore:', err)
+  }
 })
 
 // Función para obtener N problemas aleatorios

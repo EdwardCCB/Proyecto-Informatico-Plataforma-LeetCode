@@ -18,7 +18,6 @@
 
       <!-- Sección del editor -->
       <div class="w-1/2 flex flex-col">
-        <!-- Selector de lenguaje -->
         <div class="bg-white p-2 border-b border-gray-200">
           <label class="block text-sm font-medium text-gray-700 mb-1">Lenguaje</label>
           <select v-model="selectedLanguageId" class="p-2 border rounded bg-white text-black w-full">
@@ -28,16 +27,16 @@
           </select>
         </div>
 
-        <!-- Editor -->
         <div class="flex-grow overflow-hidden">
           <CodeEditor v-model="code" :language="editorLanguage" />
         </div>
 
-        <!-- Resultado de ejecución -->
         <div class="bg-white text-black p-2 h-40 overflow-y-auto">
           <p class="text-green-400 font-mono mb-1">Testcase:</p>
           <pre>{{ output }}</pre>
           <div v-if="error" class="text-red-500 mt-2">{{ error }}</div>
+          <div v-if="resultStatus === 'success'" class="text-green-600 font-semibold">✅ Tu solución es correcta</div>
+          <div v-else-if="resultStatus === 'fail'" class="text-red-600 font-semibold">❌ La salida no es la esperada</div>
         </div>
       </div>
     </div>
@@ -53,9 +52,11 @@ import CodeEditor from '../components/CodeEditor.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getAuth } from 'firebase/auth'
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { db } from '../utils/firebase'
 import { marked } from 'marked'
+import { useSolvedProblems } from '../composables/useSolvedProblems'
 
-// Lenguajes soportados por Judge0 y su nombre para el editor
 const languages = [
   { id: 54, name: 'C++ (GCC 9.2.0)', editorLang: 'cpp' },
   { id: 62, name: 'Java (OpenJDK 13)', editorLang: 'java' },
@@ -64,29 +65,10 @@ const languages = [
 ]
 
 const languageSnippets = {
-  54: `#include <iostream>
-using namespace std;
-
-int main() {
-    // Escribe tu código aquí
-    return 0;
-}`,
-  62: `public class Main {
-    public static void main(String[] args) {
-        // Escribe tu código aquí
-    }
-}`,
-  71: `def main():
-    # Escribe tu código aquí
-    pass
-
-if __name__ == "__main__":
-    main()`,
-  63: `function main() {
-    // Escribe tu código aquí
-}
-
-main();`,
+  54: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Escribe tu código aquí\n    return 0;\n}`,
+  62: `public class Main {\n    public static void main(String[] args) {\n        // Escribe tu código aquí\n    }\n}`,
+  71: `def main():\n    # Escribe tu código aquí\n    pass\n\nif __name__ == "__main__":\n    main()`,
+  63: `function main() {\n    // Escribe tu código aquí\n}\n\nmain();`,
 }
 
 const selectedLanguageId = ref(54)
@@ -94,26 +76,36 @@ const code = ref('')
 const output = ref('')
 const error = ref('')
 const loading = ref(false)
+const resultStatus = ref(null)
 
 const editorLanguage = computed(() => {
   const lang = languages.find(l => l.id === selectedLanguageId.value)
   return lang ? lang.editorLang : 'cpp'
 })
 
-import problemsData from '../data/problems.json'
-
 const route = useRoute()
 const problem = ref({})
+const { solvedProblems } = useSolvedProblems()
 
 const renderedDescription = computed(() => {
   return marked.parse(problem.value.description || '')
 })
 
-onMounted(() => {
-  const found = problemsData.find(p => p.id === route.params.id)
-  if (found) {
-    problem.value = found
-    code.value = languageSnippets[selectedLanguageId.value] || found.code || ''
+onMounted(async () => {
+  const problemId = route.params.id
+  const docRef = doc(db, 'problems', problemId)
+
+  try {
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      problem.value = docSnap.data()
+      code.value = languageSnippets[selectedLanguageId.value] || ''
+    } else {
+      error.value = 'Problema no encontrado.'
+    }
+  } catch (err) {
+    console.error('Error cargando problema:', err.message)
+    error.value = 'Error al cargar problema.'
   }
 })
 
@@ -121,6 +113,7 @@ async function handleRun() {
   error.value = ''
   output.value = ''
   loading.value = true
+  resultStatus.value = null
 
   const user = getAuth().currentUser
   if (!user) {
@@ -150,7 +143,14 @@ async function handleRun() {
     if (data.stderr) {
       output.value = `Error: ${data.stderr}`
     } else if (data.stdout) {
-      output.value = data.stdout
+      output.value = data.stdout.trim()
+
+      if (problem.value.expectedOutput && data.stdout.trim() === problem.value.expectedOutput.trim()) {
+        resultStatus.value = 'success'
+        await markProblemAsSolved()
+      } else {
+        resultStatus.value = 'fail'
+      }
     } else if (data.compile_output) {
       output.value = `Compilación fallida: ${data.compile_output}`
     } else {
@@ -164,13 +164,35 @@ async function handleRun() {
   }
 }
 
+async function markProblemAsSolved() {
+  const user = getAuth().currentUser
+  if (!user) return
+
+  try {
+    const userRef = doc(db, 'users', user.uid)
+    await updateDoc(userRef, {
+      solvedProblems: arrayUnion(problem.value.id)
+    })
+
+    // Refrescar estado local reactivo
+    if (!solvedProblems.value.includes(problem.value.id)) {
+      solvedProblems.value.push(problem.value.id)
+    }
+
+    console.log('Problema marcado como resuelto.')
+  } catch (err) {
+    console.error('Error al marcar problema como resuelto:', err.message)
+  }
+}
+
 function handleSubmit() {
   console.log('Submit clicked')
 }
 
 function handleReset() {
-  code.value = problem.value.code || ''
+  code.value = languageSnippets[selectedLanguageId.value] || ''
   output.value = ''
   error.value = ''
+  resultStatus.value = null
 }
 </script>
