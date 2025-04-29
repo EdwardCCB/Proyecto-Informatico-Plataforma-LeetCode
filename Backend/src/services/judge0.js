@@ -5,7 +5,7 @@ const JUDGE0_BASE_URL = 'https://judge0-ce.p.rapidapi.com'
 // Función para crear instancia con la key ya cargada
 const createJudge0API = () => {
   const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY
-  console.log('RAPIDAPI_KEY (dentro de función):', RAPIDAPI_KEY) // debug
+  //console.log('RAPIDAPI_KEY (dentro de función):', RAPIDAPI_KEY) // debug
 
   return axios.create({
     baseURL: JUDGE0_BASE_URL,
