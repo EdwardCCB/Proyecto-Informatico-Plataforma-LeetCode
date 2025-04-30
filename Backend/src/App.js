@@ -10,6 +10,7 @@ const app = express()
 
 // Middleware
 app.use(corsOptions)
+app.options('*', corsOptions);  // Permite las solicitudes OPTIONS para todos los recursos
 app.use(express.json())
 
 // Inicializar Firebase Admin desde variable de entorno
