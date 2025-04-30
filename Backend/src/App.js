@@ -10,6 +10,7 @@ const app = express()
 
 // Middleware
 app.use(corsOptions)  // Usamos el middleware de CORS configurado previamente
+app.options('*', corsOptions)  // Preflight para todas las rutas
 app.use(express.json())  // Parsear el cuerpo de las solicitudes como JSON
 
 // Inicializar Firebase Admin desde variable de entorno
