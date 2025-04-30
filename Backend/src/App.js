@@ -1,15 +1,15 @@
 import express from 'express'
-import cors from 'cors'
 import admin from 'firebase-admin'
 import dotenv from 'dotenv'
 import { submitCode } from './services/judge0.js'
+import { corsOptions } from './middleware/cors.js'
 
 dotenv.config()
 
 const app = express()
 
 // Middleware
-app.use(cors())
+app.use(corsOptions)
 app.use(express.json())
 
 // Inicializar Firebase Admin desde variable de entorno

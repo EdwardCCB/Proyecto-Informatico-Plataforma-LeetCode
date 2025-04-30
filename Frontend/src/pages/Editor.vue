@@ -57,6 +57,8 @@ import { db } from '../utils/firebase'
 import { marked } from 'marked'
 import { useSolvedProblems } from '../composables/useSolvedProblems'
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const languages = [
   { id: 54, name: 'C++ (GCC 9.2.0)', editorLang: 'cpp' },
   { id: 62, name: 'Java (OpenJDK 13)', editorLang: 'java' },
@@ -125,7 +127,7 @@ async function handleRun() {
   const token = await user.getIdToken()
 
   try {
-    const res = await fetch('http://localhost:4000/api/execute', {
+    const res = await fetch(`${BACKEND_URL}/api/execute`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -174,7 +176,6 @@ async function markProblemAsSolved() {
       solvedProblems: arrayUnion(problem.value.id)
     })
 
-    // Refrescar estado local reactivo
     if (!solvedProblems.value.includes(problem.value.id)) {
       solvedProblems.value.push(problem.value.id)
     }

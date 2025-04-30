@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col bg-gray-100">
     <Navbar />
-
     <main class="flex-grow max-w-5xl mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
 
@@ -45,7 +44,6 @@
         </table>
       </div>
     </main>
-
     <Footer />
   </div>
 </template>
@@ -64,7 +62,8 @@ const users = ref([])
 const loadingUsers = ref(true)
 const router = useRouter()
 
-// Escuchar cambios de usuarios
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 onSnapshot(collection(db, 'users'), (snapshot) => {
   users.value = snapshot.docs.map(doc => ({
     id: doc.id,
@@ -73,18 +72,16 @@ onSnapshot(collection(db, 'users'), (snapshot) => {
   loadingUsers.value = false
 })
 
-// Computamos si el usuario es admin
 const isAdmin = computed(() => {
   if (!currentUser.value || loadingUsers.value) return false
   const foundUser = users.value.find(u => u.id === currentUser.value.uid)
   return foundUser?.role === 'admin'
 })
 
-// Redireccionar si no es admin (opcional)
 watch(isAdmin, (newVal) => {
   if (!newVal && !loadingUsers.value) {
     console.warn('Acceso denegado, no eres admin.')
-    // router.push('/')  // Descomenta si quieres redirigir automáticamente
+    // router.push('/')
   }
 })
 
@@ -103,7 +100,7 @@ async function deleteUser(userId) {
   if (!confirm('¿Estás seguro de que deseas eliminar este usuario?')) return;
 
   try {
-    await fetch(`http://localhost:4000/api/users/${userId}`, {
+    await fetch(`${BACKEND_URL}/api/users/${userId}`, {
       method: 'DELETE',
     })
     alert('Usuario eliminado correctamente')
