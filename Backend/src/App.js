@@ -9,14 +9,13 @@ dotenv.config()
 const app = express()
 
 // Middleware
-app.use(corsOptions)
-//app.options('*', corsOptions);  // Permite las solicitudes OPTIONS para todos los recursos
-app.use(express.json())
+app.use(corsOptions)  // Usamos el middleware de CORS configurado previamente
+app.use(express.json())  // Parsear el cuerpo de las solicitudes como JSON
 
 // Inicializar Firebase Admin desde variable de entorno
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
 
-serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -49,8 +48,10 @@ app.delete('/api/delete-user/:uid', async (req, res) => {
   }
 })
 
-// Iniciar servidor
+// Usamos la variable de entorno PORT si está definida, sino usamos 4000 para desarrollo
 const PORT = process.env.PORT || 4000
+
+// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`)
 })
