@@ -8,6 +8,7 @@ const allowedOrigins = [
 export const corsOptions = cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true)
+    console.log('Solicitando desde:', origin)
     if (allowedOrigins.includes(origin)) {
       return callback(null, true)
     } else {
