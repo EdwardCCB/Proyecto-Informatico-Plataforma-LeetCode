@@ -1,0 +1,66 @@
+# Node.js with Vue
+# Build a Node.js project that uses Vue.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - main
+
+variables:
+  - group: env-variables
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  # FRONTEND
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Instalar Node.js (frontend)'
+
+  - script: |
+      cd frontend
+      npm install
+      npm run build
+    displayName: 'Construir frontend'
+
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: 'frontend'
+      output_location: 'dist'
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+    displayName: 'Desplegar frontend'
+
+  # BACKEND
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Instalar Node.js (backend)'
+
+  - script: |
+      cd backend
+      npm install
+    displayName: 'Instalar dependencias backend'
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
+      includeRootFolder: false
+      archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+      replaceExistingArchive: true
+    displayName: 'Empaquetar backend'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/backend.zip'
+      ArtifactName: 'backend'
+    displayName: 'Publicar artefacto backend'
+
+  - task: AzureWebApp@1
+    inputs:
+      azureSubscription: 'azure-subscription' # nombre del service connection
+      appType: 'webAppLinux'
+      appName: 'gocode-backend-api' # nombre del App Service
+      package: '$(Build.ArtifactStagingDirectory)/backend.zip'
+    displayName: 'Desplegar backend'
