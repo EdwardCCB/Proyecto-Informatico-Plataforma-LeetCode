@@ -49,7 +49,7 @@
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import CodeEditor from '../components/CodeEditor.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getAuth } from 'firebase/auth'
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
@@ -109,6 +109,11 @@ onMounted(async () => {
     console.error('Error cargando problema:', err.message)
     error.value = 'Error al cargar problema.'
   }
+})
+
+// Este watch actualiza el editor al cambiar el lenguaje
+watch(selectedLanguageId, (newLangId) => {
+  code.value = languageSnippets[newLangId] || ''
 })
 
 async function handleRun() {
