@@ -42,8 +42,18 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Salida esperada (expectedOutput)</label>
-          <textarea v-model="expectedOutput" rows="4" required class="w-full p-2 border rounded-md" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Salida esperada 1</label>
+          <textarea v-model="expectedOutput1" rows="2" required class="w-full p-2 border rounded-md" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Salida esperada 2</label>
+          <textarea v-model="expectedOutput2" rows="2" required class="w-full p-2 border rounded-md" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Salida esperada 3</label>
+          <textarea v-model="expectedOutput3" rows="2" required class="w-full p-2 border rounded-md" />
         </div>
 
         <div class="text-center">
@@ -64,18 +74,23 @@ import { useRouter } from 'vue-router'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../utils/firebase'
 
+const id = ref('')
 const title = ref('')
 const shortDescription = ref('')
 const description = ref('')
 const difficulty = ref('')
 const topics = ref('')
-const expectedOutput = ref('')
-const id = ref('')
+const expectedOutput1 = ref('')
+const expectedOutput2 = ref('')
+const expectedOutput3 = ref('')
 
 const router = useRouter()
 
 async function createProblem() {
-  if (!id.value || !title.value || !shortDescription.value || !description.value || !expectedOutput.value) {
+  if (
+    !id.value || !title.value || !shortDescription.value || !description.value ||
+    !expectedOutput1.value || !expectedOutput2.value || !expectedOutput3.value
+  ) {
     alert('Por favor completa todos los campos obligatorios.')
     return
   }
@@ -88,7 +103,9 @@ async function createProblem() {
       description: description.value,
       difficulty: difficulty.value,
       topics: topics.value ? topics.value.split(',').map(t => t.trim()) : [],
-      expectedOutput: expectedOutput.value,
+      expectedOutput1: expectedOutput1.value,
+      expectedOutput2: expectedOutput2.value,
+      expectedOutput3: expectedOutput3.value,
       createdAt: serverTimestamp(),
     }
 

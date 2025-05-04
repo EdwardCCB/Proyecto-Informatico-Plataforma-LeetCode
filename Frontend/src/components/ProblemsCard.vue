@@ -14,6 +14,16 @@
       ✖
     </button>
 
+    <!-- Botón editar -->
+    <button
+      v-if="isDeleteMode"
+      @click.stop="handleEdit"
+      class="absolute top-2 left-2 bg-blue-600 hover:bg-blue-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center shadow"
+      title="Editar problema"
+    >
+      ✎
+    </button>
+
     <h3 class="text-xl font-semibold text-gray-800">{{ title }}</h3>
     <p class="text-sm text-gray-600 mt-2">{{ shortDescription }}</p>
     <span
@@ -41,7 +51,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'edit'])
 const router = useRouter()
 const { solvedProblems } = useSolvedProblems()
 
@@ -64,5 +74,9 @@ function handleClick() {
 
 function handleDelete() {
   emit('delete', props.id)
+}
+
+function handleEdit() {
+  emit('edit', props.id)
 }
 </script>

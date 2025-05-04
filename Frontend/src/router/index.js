@@ -8,6 +8,7 @@ import NotFound from '../pages/NotFound.vue'
 import Profile from '../pages/Profile.vue'
 import Admin from '../pages/Admin.vue'
 import CreateProblems from '../pages/CreateProblems.vue'
+import EditProblem from '../pages/EditProblem.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/Problems', component: Problems },
   { path: '/Admin', component: Admin },
   { path: '/CreateProblems', component: CreateProblems },
+  { path: '/Edit/:id', component: EditProblem, props: true },
   { path: '/Editor/:id', component: Editor, props: true },
 
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },

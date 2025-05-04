@@ -5,17 +5,17 @@ import Footer from '../components/Footer.vue'
 import ProblemCard from '../components/ProblemsCard.vue'
 import { getFirestore, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { useAuth } from '../composables/useAuth'
+import { useRouter } from 'vue-router'
 
 const problems = ref([])
 const selectedDifficulty = ref('Todos')
 const showAll = ref(false)
-const isDeleteMode = ref(false) // modo eliminar
+const isDeleteMode = ref(false)
 const { user } = useAuth()
+const router = useRouter()
 
-// Conexión a Firestore
 const db = getFirestore()
 
-// Cargar problemas
 onMounted(async () => {
   const res = await getDocs(collection(db, 'problems'))
   problems.value = res.docs.map(doc => ({ id: doc.id, ...doc.data() }))
@@ -49,7 +49,6 @@ const isAdmin = computed(() => {
   return user.value?.role === 'admin'
 })
 
-// 👉 Eliminar problema
 async function deleteProblem(problemId) {
   if (!confirm('¿Estás seguro de que quieres eliminar este problema?')) return
 
@@ -61,6 +60,10 @@ async function deleteProblem(problemId) {
     console.error('Error al eliminar problema:', error)
     alert('Error eliminando el problema')
   }
+}
+
+function editProblem(problemId) {
+  router.push(`/Edit/${problemId}`)
 }
 </script>
 
@@ -84,7 +87,7 @@ async function deleteProblem(problemId) {
           <button
             @click="isDeleteMode = !isDeleteMode"
             class="bg-red-600 hover:bg-red-500 text-white text-xl w-10 h-10 rounded-full flex items-center justify-center shadow transition"
-            :title="isDeleteMode ? 'Cancelar eliminar' : 'Eliminar problemas'"
+            :title="isDeleteMode ? 'Cancelar eliminar/editar' : 'Eliminar o editar problemas'"
           >
             -
           </button>
@@ -117,6 +120,7 @@ async function deleteProblem(problemId) {
           :difficulty="problem.difficulty"
           :isDeleteMode="isDeleteMode"
           @delete="deleteProblem"
+          @edit="editProblem"
         />
       </div>
 
