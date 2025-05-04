@@ -28,6 +28,7 @@ app.post('/api/execute', async (req, res) => {
 
   const results = []
   let i = 1
+  let allPassed = true  // Variable para verificar si todas las pruebas pasaron
 
   while (true) {
     const inputKey = `input${i}`
@@ -45,13 +46,21 @@ app.post('/api/execute', async (req, res) => {
       const result = await submitCode(source_code, language_id, stdin)
       const actual = result.stdout?.trim() || result.stderr || result.compile_output || ''
 
+      const passed = actual === expected
+
       results.push({
         testCase: i,
         input: stdin,
         expectedOutput: expected,
         actualOutput: actual,
-        passed: actual === expected,
+        passed,
       })
+
+      // Si alguna prueba falla, marcamos allPassed como false
+      if (!passed) {
+        allPassed = false
+      }
+
     } catch (err) {
       results.push({
         testCase: i,
@@ -61,12 +70,16 @@ app.post('/api/execute', async (req, res) => {
         passed: false,
         error: err.message,
       })
+      allPassed = false  // Si hay un error, las pruebas no han pasado
     }
 
     i++
   }
 
-  res.json({ results })
+  res.json({
+    results,
+    passed: allPassed,  // Enviamos el estado general de si todas las pruebas pasaron
+  })
 })
 
 // Nueva ruta para eliminar un usuario

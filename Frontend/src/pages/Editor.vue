@@ -130,74 +130,59 @@ async function handleRun() {
   }
 
   const token = await user.getIdToken()
-  const testCases = []
-
-  // Recoger todos los pares input / expectedOutput (input1, expectedOutput1, etc.)
-  for (let i = 1; i <= 10; i++) {
-    const input = problem.value[`input${i}`]
-    const expected = problem.value[`expectedOutput${i}`]
-    if (input && expected) {
-      testCases.push({ input, expected })
-    }
-  }
-
-  // Si no hay testCases, usar el default (por compatibilidad)
-  if (testCases.length === 0 && problem.value.expectedOutput) {
-    testCases.push({
-      input: '',
-      expected: problem.value.expectedOutput
-    })
-  }
 
   try {
-    let allPassed = true
-    let results = []
+    const res = await fetch(`${BACKEND_URL}/api/execute`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        source_code: code.value,
+        language_id: selectedLanguageId.value,
+        stdin: '',
+      }),
+    })
 
-    for (const { input, expected } of testCases) {
-      const res = await fetch(`${BACKEND_URL}/api/execute`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          source_code: code.value,
-          language_id: selectedLanguageId.value,
-          stdin: input,
-        }),
-      })
+    const data = await res.json()
 
-      const data = await res.json()
+    if (data.stderr) {
+      output.value = `Error: ${data.stderr}`
+    } else if (data.stdout) {
+      output.value = data.stdout.trim()
 
-      if (data.stderr || data.compile_output) {
-        allPassed = false
-        results.push(`❌ Entrada: ${input}\n${data.stderr || data.compile_output}`)
-        break
+      // Recuperamos las salidas esperadas desde la base de datos (aquí es donde
+      // debes tener las variables `expectedOutput1`, `expectedOutput2`, `expectedOutput3`)
+      const expectedOutputs = [
+        problem.value.expectedOutput1,
+        problem.value.expectedOutput2,
+        problem.value.expectedOutput3,
+      ]
+      
+      // Comprobamos si alguna de las salidas esperadas coincide con la salida obtenida
+      let comparisonResult = false
+      for (let i = 0; i < expectedOutputs.length; i++) {
+        if (data.stdout.trim() === expectedOutputs[i].trim()) {
+          comparisonResult = true
+          resultStatus.value = 'success'
+          console.log(`✅ Salida correcta para el caso ${i + 1}`)
+          break
+        }
       }
 
-      const actualOutput = data.stdout.trim()
-      const expectedTrimmed = expected.trim()
-
-      // Verificar si la salida real coincide con la salida esperada
-      if (actualOutput !== expectedTrimmed) {
-        allPassed = false
-        results.push(`❌ Entrada: ${input}\nEsperado: ${expectedTrimmed}\nObtenido: ${actualOutput}`)
-        break
+      // Si no hubo coincidencias
+      if (!comparisonResult) {
+        resultStatus.value = 'fail'
+        console.log(`❌ Entrada: ${data.stdout.trim()}`)
+        console.log(`Esperado: ${expectedOutputs.join(' o ')}`)
+        console.log(`Obtenido: ${data.stdout.trim()}`)
       }
-
-      results.push(`✅ Entrada: ${input}\nSalida correcta`)
+    } else if (data.compile_output) {
+      output.value = `Compilación fallida: ${data.compile_output}`
+    } else {
+      output.value = 'Código ejecutado sin salida.'
     }
-
-    // Aquí, asegúrate de solo mostrar el número de pares como salida
-    output.value = results.join('\n\n')
-
-    // El estado de éxito o fracaso se basa en si todos los casos pasaron
-    resultStatus.value = allPassed ? 'success' : 'fail'
-
-    if (allPassed) {
-      await markProblemAsSolved()
-    }
-
   } catch (err) {
     error.value = 'Error ejecutando el código.'
     console.error(err)
@@ -232,5 +217,8 @@ function handleSubmit() {
 
 function handleReset() {
   code.value = languageSnippets[selectedLanguageId.value] || ''
+  output.value = ''
+  error.value = ''
+  resultStatus.value = null
 }
 </script>
