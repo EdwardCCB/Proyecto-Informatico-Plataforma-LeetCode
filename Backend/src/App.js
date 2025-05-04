@@ -24,15 +24,49 @@ admin.initializeApp({
 
 // Ruta para ejecutar código con Judge0
 app.post('/api/execute', async (req, res) => {
-  const { source_code, language_id, stdin } = req.body
+  const { source_code, language_id, ...rest } = req.body
 
-  try {
-    const result = await submitCode(source_code, language_id, stdin)
-    res.json(result)
-  } catch (error) {
-    console.error('Error ejecutando código:', error)
-    res.status(500).json({ error: 'Error al ejecutar código' })
+  const results = []
+  let i = 1
+
+  while (true) {
+    const inputKey = `input${i}`
+    const expectedKey = `expectedOutput${i}`
+
+    if (!(inputKey in rest) || !(expectedKey in rest)) break
+
+    const stdin = Array.isArray(rest[inputKey])
+      ? rest[inputKey].join(' ')
+      : String(rest[inputKey])
+
+    const expected = String(rest[expectedKey]).trim()
+
+    try {
+      const result = await submitCode(source_code, language_id, stdin)
+      const actual = result.stdout?.trim() || result.stderr || result.compile_output || ''
+
+      results.push({
+        testCase: i,
+        input: stdin,
+        expectedOutput: expected,
+        actualOutput: actual,
+        passed: actual === expected,
+      })
+    } catch (err) {
+      results.push({
+        testCase: i,
+        input: stdin,
+        expectedOutput: expected,
+        actualOutput: null,
+        passed: false,
+        error: err.message,
+      })
+    }
+
+    i++
   }
+
+  res.json({ results })
 })
 
 // Nueva ruta para eliminar un usuario
