@@ -23,6 +23,7 @@ admin.initializeApp({
 })
 
 // Ruta para ejecutar código con Judge0
+// Ruta para ejecutar código con Judge0
 app.post('/api/execute', async (req, res) => {
   const { source_code, language_id, ...rest } = req.body
 
@@ -44,7 +45,7 @@ app.post('/api/execute', async (req, res) => {
 
     try {
       const result = await submitCode(source_code, language_id, stdin)
-      const actual = result.stdout?.trim() || result.stderr || result.compile_output || ''
+      const actual = result.stdout?.trim() || result.stderr?.trim() || result.compile_output || 'No output'
 
       const passed = actual === expected
 
